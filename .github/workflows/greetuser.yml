@@ -1,0 +1,31 @@
+
+name: Greet User
+
+on: [push]
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Create greeting script
+      run: |
+        echo "function greetUser() {" > greet.js
+        echo "    const now = new Date();" >> greet.js
+        echo "    const timeString = now.toLocaleTimeString();" >> greet.js
+        echo "    const greeting = \`Hello, user! The current time is \${timeString}.\`;" >> greet.js
+        echo "    console.log(greeting);" >> greet.js
+        echo "    return { message: greeting, time: now };" >> greet.js
+        echo "}" >> greet.js
+        echo "greetUser();" >> greet.js
+
+    - name: Run greeting script
+      run: node greet.js
